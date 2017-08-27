@@ -38,7 +38,7 @@ const styles = {
     flexDirection: 'row',
     flexFlow: 'space-around',
     alignItems: 'center',
-    justifyContent: 'center',
+    justifyContent: 'flex-end',
   },
   avatar: {
     margin: 10,

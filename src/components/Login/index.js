@@ -52,7 +52,7 @@ class Login extends Component {
         const userLogedin = <div className={classes.row}>{ logoutButton }<User data={this.state.user}/></div>;
 
         return (
-            <div>
+            <div className={classes.row}>
                 { this.state.user ? userLogedin : facebookLogin }
             </div>
         );
@@ -126,7 +126,10 @@ const styles = theme => ({
   },
   row: {
     display: 'flex',
-    justifyContent: 'center',
+    flexDirection: 'row',
+    flexFlow: 'space-around',
+    alignItems: 'center',
+    justifyContent: 'flex-end',
   }
 });
 
