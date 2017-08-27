@@ -35,6 +35,9 @@ User.propTypes = {
 const styles = {
   row: {
     display: 'flex',
+    flexDirection: 'row',
+    flexFlow: 'space-around',
+    alignItems: 'center',
     justifyContent: 'center',
   },
   avatar: {

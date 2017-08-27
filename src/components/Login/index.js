@@ -22,44 +22,38 @@ class Login extends Component {
         this.logout = this.logout.bind(this);
         this.createUser = this.createUser.bind(this);
         this.getUserData = this.getUserData.bind(this);
+        this.updateLocalStorageAndStateWithUser = this.updateLocalStorageAndStateWithUser.bind(this);
     }
 
     componentDidMount(){   
         auth.onAuthStateChanged((user) => {
             if (user) {
-                const currentUser = localStorage.getItem('currentUser');
-                const accessToken = localStorage.getItem('accessToken');
-
-                if(currentUser && accessToken){
-                    const state = {...this.state};
-                    state.user = JSON.parse(currentUser);
-                    state.accessToken = accessToken;
-                    this.setState({...state});
-                }
+                this.updateLocalStorageAndStateWithUser();
             }
         });
     }
 
+    updateLocalStorageAndStateWithUser(){
+        const currentUser = localStorage.getItem('currentUser');
+        const accessToken = localStorage.getItem('accessToken');
+
+        if(currentUser && accessToken){
+            const state = {...this.state};
+            state.user = JSON.parse(currentUser);
+            state.accessToken = accessToken;
+            this.setState({...state});
+        }
+    }
+
     render(){
         const classes = this.props.classes;
-        const facebookLogin = <Button onClick={() => this.login()} raised color="primary" className={classes.button}>Facebook Login</Button>;
+        const facebookLogin = <Button onClick={() => this.login()} raised color="primary" className={classes.button}>{loginStrings.login}</Button>;
         const logoutButton = <Button  onClick={() => this.logout()} color="accent" className={[classes.button, classes.logout, 'no-bg'].join(' ')}>{loginStrings.logout}</Button>
-
-        if(this.state.user){
-            return ( 
-                <div className={classes.row}>
-                   { logoutButton }
-                   <User data={this.state.user}/>
-                </div>
-            ); 
-        }
+        const userLogedin = <div className={classes.row}>{ logoutButton }<User data={this.state.user}/></div>;
 
         return (
             <div>
-                { this.state.user ? 
-                    <User data={this.state.user} /> 
-                    : facebookLogin
-                }
+                { this.state.user ? userLogedin : facebookLogin }
             </div>
         );
     }
@@ -83,6 +77,7 @@ class Login extends Component {
             })
             .then((user) => {
                 localStorage.setItem('currentUser', JSON.stringify(user.snapshot));
+                this.updateLocalStorageAndStateWithUser();
         });
     }
 
